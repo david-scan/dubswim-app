@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!--standard jQuery mobile css-->
+		<link rel="stylesheet" href="css/jquery.mobile-1.4.5.css">
+		<!--own css containing new theme f-->
+		<link rel="stylesheet" href="css/extra.css">
+		<!--google font for heading-->
+		<link href='http://fonts.googleapis.com/css?family=Courgette' rel='stylesheet' type='text/css'>
+		<!--Allowing for eventual phonegap packaging, will take effect after packaging-->
+		<script src="phonegap.js"></script>
+		<!--Main jQuery and specific jQuery mobile js files(both required for jQuery Mobile)-->
+	
+	</head>
+	<body>
+		<!--Starting a jQuery mobile page-->
+		<div data-role="page" id="home" data-theme="f">
+			<div data-role="header" data-theme="f"><h1>Dublins Swimming Spots</h1>
+			</div>
+			<div data-role="content" data-theme="f">
+				<div class="content-primary">
+					<!--main menu-->
+					<ul data-role="listview" data-inset="true">
+						<li><a href="#about">About</a></li>
+						<li><a href="#sites">Sites</a></li>
+						<li><a href="#tides">Tide Table</a></li>
+						<li><a href="#weather">Weather</a></li>
+						<li><a href="#links">Links</a></li>
+						<li><a href="#contact">Contact</a></li>
+				</div>	
+			</div>
+			<div data-role="footer" data-position="fixed" data-theme="f">
+				<!--Send users back to home page and main menu-->
+				<a href="#home" data-icon="home">Home</a>
+				<div class="copyright">&copy 2015</div>
+			</div>
+		</div>
+		<!--End of first jQuery mobile page-->
+
+		<!--Starting a jQuery mobile page-->
+		<div data-role="page" id="about" data-theme="f">
+			<div data-role="header" data-theme="f"><h1>Dublins Swimming Spots</h1>
+			</div>
+			<div data-role="content" data-theme="f">
+				<div class="content-primary">
+					<!--Div used in pages without lists or collapsibles to house text/tables-->
+					<div class="tides">
+						<h3>Outdoor Swimming in Dublin</h3>
+						<p>Hello this is an app offering a guide to the best outdoor swimmings spots in county Dublin. Its done as a personal project to showcase my own development abilities using an interest of mine as a theme. Offered here is info on the sites along with map location and Flickr search results (Precise tags are sent to Flickrs web service so inappropriate images should not appear). There is access to a 5 day weather feed also cortesy of Yahoo APIs while also the tide tables for today are possible courtesy of a Web Service kindly supplied by Magic Seaweed. Hope this app is helpful and please also visit the links which I'm sure will be of interest to you.</p>
+					</div>				
+				</div>
+			</div>
+			<div data-role="footer" data-position="fixed" data-theme="f">
+				<a href="#home" data-icon="home">Home</a>
+				<div class="copyright">&copy 2015</div>
+			</div>
+		</div>
+		<!--End of second jQuery mobile page-->
+
+		<!--Starting a jQuery mobile page-->
+		<div data-role="page" id="sites" data-theme="f">
+			<div data-role="header"><h1>Dublins Swimming Spots</h1>
+			</div>
+			<div data-role="content" data-theme="f">
+				<div class="content-primary">
+					<!--Set of collapsible menus will be inserted via getJSON-->
+					<div data-role="collapsibleset" id="site-list">
+					</div>
+				</div>
+			</div>
+			<div data-role="footer" data-position="fixed" data-theme="f">
+				<a href="#home" data-icon="home">Home</a>
+				<div class="copyright">&copy 2015</div>
+			</div>
+		</div>
+		<!--End of second jQuery mobile page-->
+
+		<!--This is a dialog page connected to the 'sites' page. An 'images' button within the collapsible menus (inserted via getJSON on previous page) will trigger this dialog-->
+		<div data-role="page" data-dialog="true" data-overlay-theme="d" id="photos">
+			<div data-role="header" data-theme="d" data-close-btn="none" id="call" >
+				<div id="image-header" data-theme="d">	
+				</div>
+				<a href="#" data-rel="back" id="storm" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-notext ui-icon-delete"></a>				
+			</div>
+			<div data-role="content" data-theme="b">
+				<!--This div will be loaded with a selection of flickr images. The tags for these images are contained as values in all the 'map' buttons on the 'sites' page-->
+				<div class="content-primary" id="images">				
+			</div>
+		</div>
+	</div>
+	<!--end of images dialog page-->
+
+	<!--This is a dialog page also connected to the 'sites' page. A 'map' button within the collapsible menus (inserted via getJSON on previous page) will trigger this dialog-->
+	<div data-role="page" data-dialog="true" data-overlay-theme="d" id="maps">
+			<div data-role="header" data-theme="d" data-close-btn="none" id="call" >
+				<div id="map-header" data-theme="d">	
+				</div>
+				<a href="#" data-rel="back" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-notext ui-icon-delete"></a>				
+			</div>
+			<div data-role="content" data-theme="b">
+				<div class="content-primary" id="location">
+					<!--iframe for google map who's address is loaded via getJSON based on the value of whichever 'map' button is pressed within the 'sites' page-->
+					<iframe id="map-frame"
+  						width="90%"
+ 						height="450"
+  						frameborder="0" style="border:0"
+ 				 		src="">
+					</iframe>
+				</div>
+			</div>
+	</div>
+	<!--end of map dialog page-->
+
+<!--Start of third jQuery mobile page-->
+	<div data-role="page" id="tides" data-theme="f">
+			<div data-role="header"><h1>Dublins Swimming Spots</h1>
+			</div>
+			<div data-role="content" data-theme="f">
+				<div class="content-primary">
+					<!--Div used in pages without lists or collapsibles to house text/tables-->
+					<div class="tides">
+					<!--Dynamicaaly loaded with todays Date gotten via getJSON from the Magic Seaweed API-->	
+					<p id="forecast"></p>
+					<!--Responsive jQuery mobile table that responds to screen width-->
+					<table data-role="table" class="ui-responsive" data-mode="reflow" id="tabless">
+  						<thead>
+    						<tr>      
+      							<th>Time</th>
+     							<th>Stage</th>
+      							<th>Height</th>
+    						</tr>
+  						</thead>
+  						<!--Loaded with Times, Tide heights and Tide Stages taken from the Magic Seaweed API-->
+  						<tbody id="forecastTable">
+  						</tbody>
+					</table>
+					</div>		
+				</div>
+			</div>
+			<div data-role="footer" data-position="fixed" data-theme="f">
+				<a href="#home" data-icon="home">Home</a>
+				<div class="copyright">&copy 2015</div>
+			</div>
+		</div>
+		<!--End of third jQuery mobile page-->
+
+		<!--Start of fourth jQuery mobile page-->
+		<div data-role="page" id="weather" data-theme="f">
+			<div data-role="header"><h1>Dublins Swimming Spots</h1>
+			</div>
+			<div data-role="content" data-theme="f">
+				<div class="content-primary">
+					<!--Div used in pages without lists or collapsibles to house text/tables-->
+					<div class="tides" id="weatherData">
+						<!--Responsive jQuery mobile table that responds to screen width-->
+					<table data-role="table" class="ui-responsive" data-mode="reflow" id="tabless"> 		<thead>
+							<tr>
+								<!--table headings kept blank-->
+    							<th></th>
+    							<th></th>
+    						</tr>
+    					</thead>
+						<tbody>
+    						<tr>
+    							<!--Loaded with data from the YAhoo weather API-->
+    							<td id="one"></td>
+    							<td id="two"></td>
+    						</tr>
+  						</tbody>
+					</table>
+					</div>
+				</div>
+			</div>
+			<div data-role="footer" data-position="fixed" data-theme="f">
+				<a href="#home" data-icon="home">Home</a>
+				<div class="copyright">&copy 2015</div>
+			</div>
+		</div>
+		<!--End of fourth jQuery mobile page-->
+
+	<!--Start of fifth jQuery mobile page-->	
+	<div data-role="page" id="links" data-theme="f">
+			<div data-role="header" data-theme="f"><h1>Dublins Swimming Spots</h1>
+			</div>
+			<div data-role="content" data-theme="f">
+				<div class="content-primary">
+					<!--list of links set to data-inset=true so as not to be full page width-->
+					<ul data-role="listview" id="link-list" data-inset="true">
+					<li><a data-theme="f" href="http://magicseaweed.com" target="_blank">Magic Seaweed</a></li>
+					<li><a href="https://www.flickr.com/" target="_blank">Flickr by Yahoo</a></li>
+ 					 <li><a href="http://diving.ie" target="_blank">CFT- Irish Underwater Council</a></li>
+ 					 <li><a href="http://www.underwater-ireland.com">Underwater-Ireland(Snorkelling)</a></li>
+ 					 <li><a href="http://www.ukho.gov.uk/easytide/EasyTide/ShowPrediction.aspx?PortID=0617&PredictionLength=7">7 Day Tide Forecast</a></li>
+ 					 <li><a href="http://www.outdoorswimming.ie">Nationwide Outdoor Swimming</a></li>
+ 					 <li><a href="http://http://www.blueflagireland.org/">Irish Beaches</a></li>
+					</ul>
+				</div>
+			</div>
+			<div data-role="footer" data-position="fixed" data-theme="f">
+				<a href="#home" data-icon="home">Home</a>
+				<div class="copyright">&copy 2015</div>
+			</div>
+		</div>
+		<!--End of fifth jQuery mobile page-->
+
+		<!--Start of sixth jQuery mobile page-->
+		<div data-role="page" id="contact" data-theme="f">
+			<div data-role="header" data-theme="f"><h1>Dublins Swimming Spots</h1>
+			</div>
+			<div data-role="content" data-theme="f">
+				<div class="content-primary">
+					<!--list of links set to data-inset=true so as not to be full page width-->
+					<ul data-role="listview" id="link-list" data-inset="true">
+    							<li><a href="mailto:davpsca@hotmail.com?Subject=Query" target="_blank">email:davpsca@hotmail.com</a></li>
+    							<li><a href="http://davscansites.netne.net/">Web Portfolio</a></li>
+    							<li><a href="https://www.linkedin.com/pub/david-scanlon/29/1a8/82b/en">On Linked In</a></li>
+    							<li><a href="https://github.com/david-scan">On Github</a></li>
+    						</ul>
+
+				</div>
+			</div>
+			<div data-role="footer" data-position="fixed" data-theme="f">
+				<a href="#home" data-icon="home">Home</a>
+				<div class="copyright">&copy 2015</div>
+			</div>
+		</div>
+		<!--End of sixth jQuery mobile page-->
+		<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+		<script src="js/jquery.mobile-1.4.5.min.js"></script>
+		<script type="text/javascript">
+	$(document).ready(function(){
+		var tidesUrl="http://magicseaweed.com/api/xj7j07WNaFK5Emc5f89t0G022JF1CRog/tide/?spot_id=694";
+    	/*Getting JSON data from the magic seaweed api, it gives the data for the tide table loaded into
+    	the tides page*/
+		$.getJSON(tidesUrl, function(data){
+			/*API callback contains timestamps that need to be converted so Im
+			creating arrays to house the timestamps for hours and minutes*/
+			times=[];
+			hours=[];
+			mins=[];
+			$.each(data, function(){
+				/*first im getting the first timestamp which is simply todays date and current time
+				and converting it to a readable date that will be displayed before table*/
+				dateOfMonth = new Date(data[0]["timestamp"]*1000);
+				//then change this converted timestamp to a string 
+   				date = dateOfMonth.toGMTString();
+   				//Im slicing the section of this string I actually require(just the day & date)
+   				refineDate=date.slice(0,-13);
+   				//now I append it into the forecast paragraph
+   				$("#forecast").append("<b>Tide times for "+refineDate+"</b>");
+   			});
+   			//now to get the hours and minutes for all four tide heights that occur on todays date
+   			// I start the request within the tide array contained further within the JSON callback
+   			$.each(data[0]["tide"], function(i, item){
+   			//I convert and push the timestamps within the tide array into my own 'times' array	
+   				times.push(new Date(item["timestamp"]*1000));
+   			/* then I get the Hours from my 'times' array. Unfortunately the Javascript
+   			Date object does'nt add a zero before single digit hours so im adding it and if
+   			a zero is added before a two digit hour then the substr kicks in removing characters
+   			that are 3 places back from the end of the individual hour strings*/ 
+   				hours.push(("0"+times[i].getHours()).substr(-2));
+   			//same as above except pushing the minutes into its own array	
+   				mins.push(("0"+times[i].getMinutes()).substr(-2));
+   			//the hours and minutes can now be appended to the table along with the other data(tide heights and whether High or Low)
+   				$("#forecastTable").append("<tr><td>"+hours[i]+":"+mins[i]+"</td><td>"+item["state"]+"</td><td>"+item["shift"]+"m</td></tr>");
+   			});
+   		});
+
+		/*The Yahoo weather API contains a weather gif I wish to use and this is contained
+		within one large JSON callback value(the value for 'desription') that is a string also containing
+		a five day summary and links to Yahoos main weather page. String methods will be required*/
+		var weatherURL="https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22dublin%22)%20and%20u%3D%27c%27&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
+		
+		$.getJSON(weatherURL, function(data){
+			//an array to help store the description value so modification can be done
+			yahooForecast=[];
+		//starting the getJSOn function at a point where the description value can be gotten directly	
+			$.each(data["query"]["results"]["channel"], function(){
+				//push the description value into the array
+				yahooForecast.push(this["description"]);
+				//converting the this array to a string
+				forecastSplit=yahooForecast.toString();
+				/*I wish to load different parts of this string into their own individual cells on a 
+				jQuery table to make it screen responsive so I will need to create two substrings. 
+				Firstly I want to emphasise the start of the first substring section which is the start of the weather gif. I can do this using the below command that gives the Index number of
+				the requested expression within the IndexOf object. Im passing this Index number of this
+				expression to a variable */
+				startLocation=forecastSplit.lastIndexOf("<img src=");
+				/*now the end of the first substring section that contains the gif, it will also 
+				include a general summary for today. Its finishing point is C<BR /> and this is 
+				also turned to a variable*/
+				degreeLocation=forecastSplit.lastIndexOf(" C<BR />");
+				/*Now the start of the second substring section of the string(search and lastIndexOf perform the same function)*/ 
+				forecastLocation=forecastSplit.search("<b>Forecast:</b>");
+				//console.log(forecastSplit);
+				//console.log(forecastLocation);
+				/*This is the first cell in the table into which is appended the start and end
+				of the first section(substring) of the string. The two variables, filled above,
+				contain string indexes for start and end of the first substring*/
+				$("#one").html(forecastSplit.substr(startLocation, degreeLocation));
+				/*The second cell contains the variable for the start of the second substring
+				and as I require all the string after this point I dont need an endpoint value*/ 
+				$("#two").html(forecastSplit.substr(forecastLocation));
+			});
+		});
+
+		/*making a request to my own web service containing the information needed for
+		collapsible menus to be loaded into the 'sites' page.*/
+		$.getJSON("http://davestest.webuda.com/api/index.php/dubswim/useDart",function(data){
+   			$.each(data, function(){
+   				/*It will append the actual collapsible headings the paragraphs and also buttons 
+   				for calling a flickr dialog and a map dialog, these buttons will have unique values
+   					so only one of each dialog will be needed*/
+    			$("#site-list").append("<div data-role=\"collapsible\" data-collapsed-icon=\"carat-d\" data-expanded-icon=\"carat-u\"><h1>"+ this["Site"] + "</h1><p class=\"collapse-text\">"+ this["test"] + "</p><a href=\"#photos\" class=\"ui-shadow ui-btn ui-corner-all ui-btn-inline\" data-transition=\"pop\" name="+ this["Site"] +" value="+this["Tags"]+">Images</a><a href=\"#maps\" class=\"ui-shadow ui-btn ui-corner-all ui-btn-inline\" data-transition=\"pop\" name="+ this["Site"] +">Map</a></div>");    		
+    		});
+  		});  	
+		$(document).ajaxSuccess(function(event,xhr,settings){
+			if(settings.url=="http://davestest.webuda.com/api/index.php/dubswim/useDart"){
+				/*after the collapsibles have been successfully loaded I can now click the button
+				to call the 'photos' dialog*/
+				$("[href='#photos']").click(function(){
+					//pass the name of the button to a variable
+					var get=$(this).attr('name');
+					//make the value of this variable the heading of the dialog
+					$("#image-header").html("<h1 class=\"dialog-head\">"+get+" on Flickr</h1>");
+					/*the selected button also contains its own value attribute that will be used as tags
+					for the Flickr API*/
+					var photoTags=$(this).attr('value');
+					//The flickr api is called and the above variable added as tags for locating specific photos
+					(function() {
+  						var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+  						$.getJSON( flickerAPI, {
+				    		tags: photoTags,
+				    		tagmode: "all",
+				    		format: "json"
+ 					 	})
+ 					 	//a maximum of 4 photos will be appended to the 'images' dialog
+    					.done(function( data ) {
+     						 $.each( data.items, function( i, item ) {
+				      			$('#images').append("<img src="+item.media.m+"/>");
+				        		if ( i === 3 ) {
+				          		return false;
+       					 		}
+     				 		});
+    					});
+					})();		
+				});
+				/*after the collapsibles have been successfully loaded I can now click the button
+				to call the 'maps' dialog*/
+				$("[href='#maps']").click(function(){
+				//pass the name of the button to a variable
+					var site=$(this).attr('name');
+				//make the value of this variable the heading of the dialog
+					$("#map-header").html("<h1 class=\"dialog-head\">"+site+" on Map</h1>");
+				/*I have links for each map that are accessed through this web service and I use 
+				the above variable again, this time in a GET request value to get the specific map
+				link for the selected button*/
+					$.getJSON("http://davestest.webuda.com/api/index.php/dubswim/bestTide?name="+site, function(data){
+							$.each(data, function(){
+							/*The value from the returned data is inserted into the below src attribute
+							replacing any existing src attribute*/
+							$("#map-frame").attr('src', this["map"]);
+							});
+					});
+				});				
+			}
+			if(settings.url==weatherURL){
+				/*This ensures the links within the weather table, returned by the Yahoo weather API,
+				will open on the default mobile browser, this requires the Phonegap InAppBrowser*/
+				$("#weatherData a[href]").click(function(){
+					var link=$(this).attr('href');
+					window.open(link, "_system");
+					return false;
+				});
+			}
+		});
+		
+	
+//this ensures emptying of the images within the 'images' dialog when the dialog is closed
+	$("#storm").click(function(){
+		$('#images').empty();
+	});
+	/*This ensures the links within the Links page and the Contact page
+	will open on the default mobile browser, this requires the Phonegap InAppBrowser*/
+	$("#link-list li a[href], .tides a[href]").click(function(){
+		var link=$(this).attr('href');
+		window.open(link, "_system");
+		return false;
+	});
+});
+</script>
+	</body>
+</html>

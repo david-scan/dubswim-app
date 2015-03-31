@@ -1,0 +1,276 @@
+/*setting up a general background color*/
+body{
+	background-color: #248FB2;
+}
+/*overwriting the potential 30% margins that appear on the JQuery Mobile 
+header and title css*/
+.ui-header .ui-title{
+	width:auto;
+	margin:0;
+	font-size:1.7em;
+}
+/*adding styles and an animated background to the heading title*/
+.ui-title{
+	font-family: 'Courgette', cursive;	
+	text-align: center;
+	text-shadow:none;
+	display:block;
+	color:#ffffff;	
+	background-image:url("../images/water.gif");
+	background-size:6em;
+	background-position:0% 0%;
+	background-repeat :repeat-x; 
+	background-color:#248FB2;
+    -webkit-animation-name:waves;
+	-webkit-animation-duration:3s;
+	-webkit-animation-iteration-count:infinite;
+	animation-name:waves;
+	animation-duration:3s;
+	animation-iteration-count:infinite;
+}
+/*animation operations*/
+@-webkit-keyframes waves{
+	0% {background-position:0% 0%;}
+	25% {background-position:26% -100%;}
+	50% {background-position:52% -200;}
+	75% {background-position:88% 100%;}
+	100% {background-position:105% 0%;}	
+}
+@keyframes waves{
+	0% {background-position:0% 0%;}
+	25% {background-position:26% -100%;}
+	50% {background-position:52% -200;}
+	75% {background-position:88% 100%;}
+	100% {background-position:105% 0%;}	
+}
+/*This is styling the collapsible within the sites page*/
+.collapse-text{
+	font-size: 0.8em;
+	line-height: 1.7em;
+}
+.ui-collapsible-content .ui-btn{
+	font-size: 0.8em;
+}
+/*overwriting the standard jquery mobile dialog css positioning*/
+#photos .ui-dialog-contain,
+#maps .ui-dialog-contain{
+	margin:2em auto 10% auto;
+}
+/*styles for the headings on the dialogs that will be loaded via getJSON*/
+#image-header, #map-header{
+    position:relative;
+    text-align:center;
+    font-size: 0.5em;
+}
+/*positioning the headings on the dialogs that will be loaded via getJSON*/
+.dialog-head h1{
+    position:relative;
+    margin-left: auto;
+    margin-right:auto;
+}
+/*positioning the returned flickr images in the 'images' dialog*/
+#images{
+    text-align:center;
+}
+/*this div is used to house the 'about' page text and the tables in
+the weather and tide pages*/
+.tides{
+	background-color: #3C7760;
+	padding: 1em;
+	line-height: 1.5em;
+	border-radius: 1em;
+	font-size:0.8em;
+}
+/*Styling the links that appear in the weather table within the tides div*/
+.tides a{
+	color:#fff;
+	text-decoration: none;
+	display:inline-block;
+	background-color:rgba(0,0,0,0.3);
+	padding:0.5em;	
+	border-radius:0.5em;
+	margin-bottom:1em;
+}
+/*Giving hover staus to the above link*/
+.tides a:hover{
+	background-color:rgba(0,0,0,0.1);
+}
+/*Giving a unique background color to odd rows in the tide forecast table*/
+#forecastTable > tr:nth-child(odd){
+    background: #305F4D;
+}
+/*This is styling a paragraph that will be getJSON loaded within the tides page*/
+#forecast{
+    font-size: 1.2em;
+}
+/*This is styling the weather gif that will be loaded via getJSON with weather data*/
+#weatherData img{
+	width:15%;
+	background-color:#fff;
+	border-radius: 50%;
+}
+/*This is styling the links that will be loaded via getJSON with weather data*/
+#weatherData a{
+	line-height:0.6em;
+}
+/*This is removing an unwanted <br/> thats contained in the string of weather data*/
+#two > br:nth-of-type(9) {
+	display:none;
+}
+/*This is styling link lists that appear in 'links' and 'contact' pages*/
+#link-list{
+margin-top:1em;
+}
+#link-list .ui-btn{
+	font-size:0.8em;
+	font-style:italic;
+	font-weight: normal;
+}
+/*This is styling the footers items, the copyright text and the 'Home' button*/
+.copyright{
+	position:relative;
+	text-align:right;
+	font-size:0.9em;
+	margin-right: 1em;
+	float:right;
+	font-weight: normal;
+	top:1em;
+}
+.ui-footer .ui-btn{
+		margin-left:1em;
+	}
+
+
+
+/* Creation of a theme 'F'
+-----------------------------------------------------------------------------------------------------------*/
+/* Bar: Toolbars, dividers, slider track */
+.ui-bar-f,
+.ui-page-theme-f .ui-bar-inherit,
+html .ui-bar-f .ui-bar-inherit,
+html .ui-body-f .ui-bar-inherit,
+html body .ui-group-theme-f .ui-bar-inherit {
+	background-color: 			#3C7760 /*{b-bar-background-color}*/;
+	border-color:	 		#248FB2 /*{b-bar-border}*/;
+	color: 					#fff /*{b-bar-color}*/;
+	text-shadow: 0 /*{b-bar-shadow-x}*/ 1px /*{b-bar-shadow-y}*/ 0 /*{b-bar-shadow-radius}*/ 	#111 /*{b-bar-shadow-color}*/;
+	font-weight: bold;
+}
+
+ /*Page and overlay */
+.ui-overlay-f,
+.ui-page-theme-f,
+.ui-page-theme-f .ui-panel-wrapper {
+	background-color: 			#248FB2 /*{b-page-background-color}*/;
+	border-color:	 		#454545 /*{b-page-border}*/;
+	color: 					#fff /*{b-page-color}*/;
+	text-shadow: 0 /*{b-page-shadow-x}*/ 1px /*{b-page-shadow-y}*/ 0 /*{b-page-shadow-radius}*/ 	#111 /*{b-page-shadow-color}*/;
+}
+/* Body: Read-only lists, text inputs, collapsible content */
+.ui-body-f,
+.ui-page-theme-f .ui-body-inherit,
+html .ui-bar-f .ui-body-inherit,
+html .ui-body-f .ui-body-inherit,
+html body .ui-group-theme-f .ui-body-inherit,
+html .ui-panel-page-container-f {
+	background-color: 			#248FB2 /*{b-body-background-color}*/;
+	border-color:	 		#248FB2 /*#1d1d1d{b-body-border}*/;
+	color: 					#fff /*{b-body-color}*/;
+	text-shadow: 0 /*{b-body-shadow-x}*/ 0px /*{b-body-shadow-y}*/ 0 /*{b-body-shadow-radius}*/ 	#111 /*{b-body-shadow-color}*/;
+	font-weight:normal;
+
+}
+
+/* Button up */
+.ui-page-theme-f .ui-btn,
+html .ui-bar-f .ui-btn,
+html .ui-body-f .ui-btn,
+html body .ui-group-theme-f .ui-btn,
+html head + body .ui-btn.ui-btn-f,
+/* Button visited */
+.ui-page-theme-f .ui-btn:visited,
+html .ui-bar-f .ui-btn:visited,
+html .ui-body-f .ui-btn:visited,
+html body .ui-group-theme-f .ui-btn:visited,
+html head + body .ui-btn.ui-btn-f:visited {
+	background-color: 			#3C7760 /*{b-bup-background-color}*/;
+	border-color:	 		#B2B2B2 /*{b-bup-border}*/;
+	color: 					#fff /*{b-bup-color}*/;
+	text-shadow: 0 /*{b-bup-shadow-x}*/ 1px /*{b-bup-shadow-y}*/ 0 /*{b-bup-shadow-radius}*/ #111 /*{b-bup-shadow-color}*/;
+}
+
+/* Button down */
+.ui-page-theme-f .ui-btn:active,
+html .ui-bar-f .ui-btn:active,
+html .ui-body-f .ui-btn:active,
+html body .ui-group-theme-f .ui-btn:active,
+html head + body .ui-btn.ui-btn-f:active {
+	background-color: 			#404040 /*{b-bdown-background-color}*/;
+	border-color:	 		#1f1f1f /*{b-bdown-border}*/;
+	color: 					#fff /*{b-bdown-color}*/;
+	text-shadow: 0 /*{b-bdown-shadow-x}*/ 1px /*{b-bdown-shadow-y}*/ 0 /*{b-bdown-shadow-radius}*/ #111 /*{b-bdown-shadow-color}*/;
+}
+
+/* Focus */
+.ui-page-theme-f .ui-btn:focus,
+html .ui-bar-f .ui-btn:focus,
+html .ui-body-f .ui-btn:focus,
+html body .ui-group-theme-f .ui-btn:focus,
+html head + body .ui-btn.ui-btn-f:focus,
+/* Focus buttons and text inputs with div wrap */
+.ui-page-theme-f .ui-focus,
+html .ui-bar-f .ui-focus,
+html .ui-body-f .ui-focus,
+html body .ui-group-theme-f .ui-focus,
+html head + body .ui-btn-f.ui-focus,
+html head + body .ui-body-f.ui-focus {
+	-webkit-box-shadow: 0 0 12px 	#22aadd /*{b-active-background-color}*/;
+	-moz-box-shadow: 0 0 12px 		#22aadd /*{b-active-background-color}*/;
+	box-shadow: 0 0 12px 			#22aadd /*{b-active-background-color}*/;
+}
+
+/*media query for 768 width*/
+@media (min-width:768px){
+	/*adding padding to wider devices so to center content and not stretch
+	across page*/
+	.ui-content{
+		padding-left:5em;
+		padding-right:5em;
+	}
+	/*changing text height of header*/
+	.ui-header .ui-title{
+		font-size:3em;
+	}
+	/*changing background image size*/
+	.ui-title{
+		background-size:7em;
+	}
+	/*moving footer button to same position as new content*/
+	.ui-footer .ui-btn{
+		margin-left:5em;
+	}
+	/*moving copyright to same position as new content*/
+	.copyright{
+		margin-right:5em;
+	}
+	/*changing padding on div used in About, Tides and Weather pages*/
+	.tides{
+		padding-right: 2em;
+		padding-left: 2em;
+	}
+	/*changing size of weather gif used in Weather page*/
+	#weatherData img{
+		width:30%;
+		background-color:#fff;
+		border-radius: 50%;
+	}
+	/*changing size of font used in Weather page*/
+	#weatherData {
+		font-size:1.2em;
+	}
+	/*changing size of bold text in Weather page*/
+	#weatherData b{
+		font-size: 1.3em;
+	}
+
+}

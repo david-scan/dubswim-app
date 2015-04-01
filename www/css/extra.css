@@ -48,7 +48,7 @@ header and title css*/
 	font-size: 0.8em;
 	line-height: 1.7em;
 }
-.ui-collapsible-content .ui-btn{
+.ui-collapsible-content .ui-btn-inline{
 	font-size: 0.8em;
 	width:auto;
 }

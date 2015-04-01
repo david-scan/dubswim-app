@@ -308,7 +308,7 @@
 
 		/*making a request to my own web service containing the information needed for
 		collapsible menus to be loaded into the 'sites' page.*/
-		$.getJSON("http://davestest.webuda.com/api/index.php/dubswim/useDart",function(data){
+		$.getJSON("http://davestest.webuda.com/api/index.php/dubswim/getInfo",function(data){
    			$.each(data, function(){
    				/*It will append the actual collapsible headings the paragraphs and also buttons 
    				for calling a flickr dialog and a map dialog, these buttons will have unique values
@@ -317,7 +317,7 @@
     		});
   		});  	
 		$(document).ajaxSuccess(function(event,xhr,settings){
-			if(settings.url=="http://davestest.webuda.com/api/index.php/dubswim/useDart"){
+			if(settings.url=="http://davestest.webuda.com/api/index.php/dubswim/getInfo"){
 				/*after the collapsibles have been successfully loaded I can now click the button
 				to call the 'photos' dialog*/
 				$("[href='#photos']").click(function(){
@@ -357,7 +357,7 @@
 				/*I have links for each map that are accessed through this web service and I use 
 				the above variable again, this time in a GET request value to get the specific map
 				link for the selected button*/
-					$.getJSON("http://davestest.webuda.com/api/index.php/dubswim/bestTide?name="+site, function(data){
+					$.getJSON("http://davestest.webuda.com/api/index.php/dubswim/mapInfo?name="+site, function(data){
 							$.each(data, function(){
 							/*The value from the returned data is inserted into the below src attribute
 							replacing any existing src attribute*/

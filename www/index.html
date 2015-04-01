@@ -313,7 +313,7 @@
    				/*It will append the actual collapsible headings the paragraphs and also buttons 
    				for calling a flickr dialog and a map dialog, these buttons will have unique values
    					so only one of each dialog will be needed*/
-    			$("#site-list").append("<div data-role=\"collapsible\" data-collapsed-icon=\"carat-d\" data-expanded-icon=\"carat-u\"><h1>"+ this["Site"] + "</h1><p class=\"collapse-text\">"+ this["test"] + "</p><a href=\"#photos\" class=\"ui-shadow ui-btn ui-corner-all ui-btn-inline\" data-transition=\"pop\" name="+ this["Site"] +" value="+this["Tags"]+">Images</a><a href=\"#maps\" class=\"ui-shadow ui-btn ui-corner-all ui-btn-inline\" data-transition=\"pop\" name="+ this["Site"] +">Map</a></div>");    		
+    			$("#site-list").append("<div data-role=\"collapsible\" data-collapsed-icon=\"carat-d\" data-expanded-icon=\"carat-u\"><h1>"+ this["Site"] + "</h1><p class=\"collapse-text\">"+ this["test"] + "</p><a href=\"#photos\" class=\"ui-shadow ui-btn ui-corner-all ui-btn-inline\" data-transition=\"pop\" data-inline=\"true\" name="+ this["Site"] +" value="+this["Tags"]+">Images</a><a href=\"#maps\" class=\"ui-shadow ui-btn ui-corner-all ui-btn-inline\" data-transition=\"pop\" data-inline=\"true\" name="+ this["Site"] +">Map</a></div>");    		
     		});
   		});  	
 		$(document).ajaxSuccess(function(event,xhr,settings){

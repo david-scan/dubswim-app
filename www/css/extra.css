@@ -50,7 +50,6 @@ header and title css*/
 }
 .ui-collapsible-content .ui-btn-inline{
 	font-size: 0.8em;
-	width:auto;
 }
 /*overwriting the standard jquery mobile dialog css positioning*/
 #photos .ui-dialog-contain,

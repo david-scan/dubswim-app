@@ -136,6 +136,7 @@
   						<tbody id="forecastTable">
   						</tbody>
 					</table>
+					<p id="details"></p>
 					</div>		
 				</div>
 			</div>
@@ -232,6 +233,7 @@
 		<script type="text/javascript">
 	$(document).ready(function(){
 		var tidesUrl="http://magicseaweed.com/api/xj7j07WNaFK5Emc5f89t0G022JF1CRog/tide/?spot_id=694";
+		var tideForecast="http://magicseaweed.com/api/xj7j07WNaFK5Emc5f89t0G022JF1CRog/forecast/?spot_id=694";
     	/*Getting JSON data from the magic seaweed api, it gives the data for the tide table loaded into
     	the tides page*/
 		$.getJSON(tidesUrl, function(data){
@@ -260,13 +262,18 @@
    			Date object does'nt add a zero before single digit hours so im adding it and if
    			a zero is added before a two digit hour then the substr kicks in removing characters
    			that are 3 places back from the end of the individual hour strings*/ 
-   				hours.push(("0"+times[i].getHours()).substr(-2));
+   				hours.push(("0"+times[i].getUTCHours()).substr(-2));
    			//same as above except pushing the minutes into its own array	
-   				mins.push(("0"+times[i].getMinutes()).substr(-2));
+   				mins.push(("0"+times[i].getUTCMinutes()).substr(-2));
    			//the hours and minutes can now be appended to the table along with the other data(tide heights and whether High or Low)
    				$("#forecastTable").append("<tr><td>"+hours[i]+":"+mins[i]+"</td><td>"+item["state"]+"</td><td>"+item["shift"]+"m</td></tr>");
    			});
    		});
+   		$.getJSON(tideForecast, function(data){
+					$.each(data, function(i,item){
+   				$("#details").html("<b>Wind is "+data[0]["wind"]["speed"]+"mph, direction "+data[0]["wind"]["compassDirection"]+". Water Temp "+data[0]["condition"]["temperature"]+"c</b>");
+					});
+				});
 
 		/*The Yahoo weather API contains a weather gif I wish to use and this is contained
 		within one large JSON callback value(the value for 'desription') that is a string also containing
@@ -376,6 +383,9 @@
 				});
 			}
 		});
+		$(document).ajaxError(function(event, xhr, settings){
+  				alert("Connection for "+settings.url+"is Unavailable");
+  		});
 		
 	
 //this ensures emptying of the images within the 'images' dialog when the dialog is closed

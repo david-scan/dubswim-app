@@ -346,7 +346,7 @@
  					 	//a maximum of 4 photos will be appended to the 'images' dialog
     					.done(function( data ) {
      						 $.each( data.items, function( i, item ) {
-				      			$('#images').append("<img src="+item.media.m+"/>");
+				      			$('#images').append("<a href="+item.link+" target=\"_blank\"><img src="+item.media.m+"/></a>");
 				        		if ( i === 3 ) {
 				          		return false;
        					 		}
@@ -382,6 +382,15 @@
 					return false;
 				});
 			}
+			if(settings.url==flickerAPI){
+				/*This that the images returned by the flickr API
+				will open on the default mobile browser, this requires the Phonegap InAppBrowser*/
+				$("#images a[href]").click(function(){
+					var link=$(this).attr('href');
+					window.open(link, "_system");
+					return false;
+				});
+			}
 		});
 		$(document).ajaxError(function(event, xhr, settings){
   				alert("Connection for "+settings.url+"is Unavailable");
@@ -394,7 +403,7 @@
 	});
 	/*This ensures the links within the Links page and the Contact page
 	will open on the default mobile browser, this requires the Phonegap InAppBrowser*/
-	$("#link-list li a[href], .tides a[href]").click(function(){
+	$("#link-list li a[href], .tides a[href]).click(function(){
 		var link=$(this).attr('href');
 		window.open(link, "_system");
 		return false;

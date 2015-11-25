@@ -403,7 +403,7 @@
 	});
 	/*This ensures the links within the Links page and the Contact page
 	will open on the default mobile browser, this requires the Phonegap InAppBrowser*/
-	$("#link-list li a[href], .tides a[href]).click(function(){
+	$("#link-list li a[href], .tides a[href]").click(function(){
 		var link=$(this).attr('href');
 		window.open(link, "_system");
 		return false;

@@ -2,8 +2,8 @@
     <widget xmlns = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
         id = "com.dubSwim.example"
-        versionCode = "5"
-        version = "0.0.5" >
+        versionCode = "6"
+        version = "0.0.6" >
 
     <!-- versionCode is optional and Android only -->
 
@@ -20,6 +20,7 @@
     
         <icon src="icon.png" />
         <preference name="phonegap-version" value="cli-5.2.0" />
+        <access origin="*" />
         <gap:platform name="android" />
         <gap:platform name="ios"/>
         <gap:plugin name="org.apache.cordova.inappbrowser" source="npm" />

@@ -232,12 +232,12 @@
 		<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 		<script src="js/jquery.mobile-1.4.5.min.js"></script>
 		<script type="text/javascript">
-	$(document).ready(function(){
-		var tidesUrl="http://magicseaweed.com/api/xj7j07WNaFK5Emc5f89t0G022JF1CRog/tide/?spot_id=694";
+		$(document).ready(function(){
+		var tideTable="http://magicseaweed.com/api/xj7j07WNaFK5Emc5f89t0G022JF1CRog/tide/?spot_id=694";
 		var tideForecast="http://magicseaweed.com/api/xj7j07WNaFK5Emc5f89t0G022JF1CRog/forecast/?spot_id=694";
     	/*Getting JSON data from the magic seaweed api, it gives the data for the tide table loaded into
     	the tides page*/
-		$.getJSON(tidesUrl, function(data){
+		$.getJSON(tideTable, function(data){
 			/*API callback contains timestamps that need to be converted so Im
 			creating arrays to house the timestamps for hours and minutes*/
 			times=[];
@@ -251,6 +251,7 @@
    				date = dateOfMonth.toGMTString();
    				//Im slicing the section of this string I actually require(just the day & date)
    				refineDate=date.slice(0,-13);
+   				console.log(dateOfMonth.getUTCHours());
    				//now I append it into the forecast paragraph
    				$("#forecast").append("<b>Tide times for "+refineDate+"</b>");
    			});
@@ -258,11 +259,13 @@
    			// I start the request within the tide array contained further within the JSON callback
    			$.each(data[0]["tide"], function(i, item){
    			//I convert and push the timestamps within the tide array into my own 'times' array	
-   				times.push(new Date(item["timestamp"]*1000));
+   		
+			times.push(new Date(item["timestamp"]*1000));
+   				console.log(times);
    			/* then I get the Hours from my 'times' array. Unfortunately the Javascript
    			Date object does'nt add a zero before single digit hours so im adding it and if
    			a zero is added before a two digit hour then the substr kicks in removing characters
-   			that are 3 places back from the end of the individual hour strings*/ 
+   			that are 3 places back from the end of the individual hour strings*/
    				hours.push(("0"+times[i].getUTCHours()).substr(-2));
    			//same as above except pushing the minutes into its own array	
    				mins.push(("0"+times[i].getUTCMinutes()).substr(-2));
@@ -270,18 +273,23 @@
    				$("#forecastTable").append("<tr><td>"+hours[i]+":"+mins[i]+"</td><td>"+item["state"]+"</td><td>"+item["shift"]+"m</td></tr>");
    			});
    		});
-   		$.getJSON(tideForecast, function(data){
-					$.each(data, function(i,item){
-   				$("#details").html("<b>Wind is "+data[0]["wind"]["speed"]+"mph, direction "+data[0]["wind"]["compassDirection"]+". Water Temp "+data[0]["condition"]["temperature"]+"c</b>");
-					});
-				});
+
+
+		$.getJSON(tideForecast, function(data){
+			$.each(data, function(i,item){
+   				$("#testes").html("<b>Wind is "+data[0]["wind"]["speed"]+"mph, direction "+data[0]["wind"]["compassDirection"]+". Water Temp "+data[0]["condition"]["temperature"]+"c</b>");
+			});
+		})
+		.fail(function(){
+			$("#testes").html("Need Internet to receive Magic Seaweeds Tide Data");
+		});
 
 		/*The Yahoo weather API contains a weather gif I wish to use and this is contained
 		within one large JSON callback value(the value for 'desription') that is a string also containing
 		a five day summary and links to Yahoos main weather page. String methods will be required*/
-		var weatherURL="https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22dublin%22)%20and%20u%3D%27c%27&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
+		var weatherTable="https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22dublin%22)%20and%20u%3D%27c%27&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
 		
-		$.getJSON(weatherURL, function(data){
+		$.getJSON(weatherTable, function(data){
 			//an array to help store the description value so modification can be done
 			yahooForecast=[];
 		//starting the getJSOn function at a point where the description value can be gotten directly	
@@ -312,20 +320,50 @@
 				and as I require all the string after this point I dont need an endpoint value*/ 
 				$("#two").html(forecastSplit.substr(forecastLocation));
 			});
+		})
+//Adding a failure message if theres no Internet Connection
+		.fail(function(){
+			$("#two").html("Need Internet to Access Yahoo Weather");
 		});
 
 		/*making a request to my own web service containing the information needed for
 		collapsible menus to be loaded into the 'sites' page.*/
-		$.getJSON("http://davestest.webuda.com/api/index.php/dubswim/getInfo",function(data){
+		var mainInfo="http://davestest.webuda.com/api/index.php/dubswim/getInfo";
+		$.ajaxSetup({ cache: false });
+		$.getJSON(mainInfo,function(data){
    			$.each(data, function(){
    				/*It will append the actual collapsible headings the paragraphs and also buttons 
    				for calling a flickr dialog and a map dialog, these buttons will have unique values
    					so only one of each dialog will be needed*/
     			$("#site-list").append("<div data-role=\"collapsible\" data-collapsed-icon=\"carat-d\" data-expanded-icon=\"carat-u\"><h1>"+ this["Site"] + "</h1><p class=\"collapse-text\">"+ this["test"] + "</p><a href=\"#photos\" class=\"ui-shadow ui-btn ui-corner-all ui-btn-inline\" data-transition=\"pop\" data-inline=\"true\" name="+ this["Site"] +" value="+this["Tags"]+">Images</a><a href=\"#maps\" class=\"ui-shadow ui-btn ui-corner-all ui-btn-inline\" data-transition=\"pop\" data-inline=\"true\" name="+ this["Site"] +">Map</a></div>");    		
     		});
-  		});  	
-		$(document).ajaxSuccess(function(event,xhr,settings){
-			if(settings.url=="http://davestest.webuda.com/api/index.php/dubswim/getInfo"){
+  		})
+  		/*Adding a fail method which means a JSON file is accessed instead of an API while a link to a solitary image
+  		is added along with a link to travel info also contained in the JSON file*/
+  		.fail(function(){
+  			$.getJSON("sites.json",function(data){
+   				$.each(data, function(){
+   				/*It will append the actual collapsible headings the paragraphs and also buttons 
+   				for calling a flickr dialog and a map dialog, these buttons will have unique values
+   					so only one of each dialog will be needed*/
+    				$("#site-list").append("<div data-role=\"collapsible\" data-collapsed-icon=\"carat-d\" data-expanded-icon=\"carat-u\"><h1>"+ this["Site"] + "</h1><p class=\"collapse-text\">"+ this["test"] + "</p><a href=\"#"+ this["Site"] +"Pic\" data-rel=\"popup\" data-position-to=\"window\" class=\"ui-shadow ui-btn ui-corner-all ui-btn-inline\">Image</a><a href=\"#"+ this["Site"] +"Trav\" data-rel=\"popup\" data-position-to=\"window\" class=\"ui-shadow ui-btn ui-corner-all ui-btn-inline\">Getting There</a><div data-role=\"popup\" class=\"photopopup\" data-overlay-theme=\"b\" id=\""+ this["Site"] +"Pic\"><a href=\"#\" data-rel=\"back\" class=\"ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right\">Close</a><img src=\"images/"+ this["Site"] +".jpg\"></div><div data-role=\"popup\" data-theme=\"a\" data-overlay-theme=\"b\" id=\""+ this["Site"] +"Trav\"><table class =\"trav-info\"><tbody><tr><td><b>Rail:</b></td><td>"+this["Rail"]+"</td></tr><tr><td><b>Bus:</b></td><td>"+this["Bus"]+"</td></tr></tbody></table></div></div>");    		
+    			}); 
+  			})
+			/*done method which occurs only when the above fail method activates and allows a solitary photopopup
+			to appear when the link button is pressed.*/
+  			.done(function(){
+  				$( ".photopopup" ).on({
+        			popupbeforeposition: function() {
+            			var maxHeight = $( window ).height() - 40 + "px";
+            			$( ".photopopup img" ).css( "max-height", maxHeight);
+        			}
+    			});
+  			});
+  		})
+/*main done method that occurs if the above call to mainInfo is a success and allows
+the app to connect with flickr API and access 4 images related to each individual swim site*/
+  		.done(function(){
+  		var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";	
 				/*after the collapsibles have been successfully loaded I can now click the button
 				to call the 'photos' dialog*/
 				$("[href='#photos']").click(function(){
@@ -338,22 +376,22 @@
 					var photoTags=$(this).attr('value');
 					//The flickr api is called and the above variable added as tags for locating specific photos
 					(function() {
-  						var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
-  						$.getJSON( flickerAPI, {
-				    		tags: photoTags,
-				    		tagmode: "all",
-				    		format: "json"
- 					 	})
- 					 	//a maximum of 4 photos will be appended to the 'images' dialog
-    					.done(function( data ) {
-     						 $.each( data.items, function( i, item ) {
-				      			$('#images').append("<a href="+item.link+" target=\"_blank\"><img src="+item.media.m+"/></a>");
-				        		if ( i === 3 ) {
-				          		return false;
-       					 		}
-     				 		});
-    					});
-					})();		
+                        var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+                        $.getJSON( flickerAPI, {
+                            tags: photoTags,
+                            tagmode: "all",
+                            format: "json"
+                        })
+                        //a maximum of 4 photos will be appended to the 'images' dialog
+                        .done(function( data ) {
+                             $.each( data.items, function( i, item ) {
+                                $('#images').append("<a href="+item.link+" target=\"_blank\"><img src="+item.media.m+"/></a>");
+                                if ( i === 3 ) {
+                                return false;
+                                }
+                            });
+                        });
+                    })();    
 				});
 				/*after the collapsibles have been successfully loaded I can now click the button
 				to call the 'maps' dialog*/
@@ -373,8 +411,9 @@
 							});
 					});
 				});				
-			}
-			if(settings.url==weatherURL){
+			});
+		$(document).ajaxSuccess(function(event,xhr,settings){
+			if(settings.url==weatherTable){
 				/*This ensures the links within the weather table, returned by the Yahoo weather API,
 				will open on the default mobile browser, this requires the Phonegap InAppBrowser*/
 				$("#weatherData a[href]").click(function(){
@@ -392,11 +431,8 @@
 					return false;
 				});
 			}
+			
 		});
-		$(document).ajaxError(function(event, xhr, settings){
-  				alert("Connection for "+settings.url+"is Unavailable");
-  		});
-		
 	
 //this ensures emptying of the images within the 'images' dialog when the dialog is closed
 	$("#storm").click(function(){
@@ -404,7 +440,7 @@
 	});
 	/*This ensures the links within the Links page and the Contact page
 	will open on the default mobile browser, this requires the Phonegap InAppBrowser*/
-	$("#link-list li a[href], .tides a[href]").click(function(){
+	$("#link-list li a[href], .tides a[href], #images a[href]").click(function(){
 		var link=$(this).attr('href');
 		window.open(link, "_system");
 		return false;

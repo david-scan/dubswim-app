@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
     <widget xmlns = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
-        id = "com.dubSwim.example"
+        id = "com.dublinSwimSpots.example"
         versionCode = "6"
         version = "0.0.6" >
 
     <!-- versionCode is optional and Android only -->
 
-        <name>Dubswim</name>
+        <name>Dublins Swimming Spots</name>
 
         <description>
             trial version of dubswim
@@ -18,12 +18,14 @@
         </author>
             
     
-        <icon src="icon.png" />
-        <preference name="phonegap-version" value="cli-5.2.0" />
-        <access origin="*" />
+        <icon src="www/icon.png" />
+        <content src="index.html" />
+        <allow-navigation href="*" />
+        <allow-intent href="*" />
+        <access origin="*"/>
+        <preference name="phonegap-version" value="3.5.3" />
         <gap:platform name="android" />
         <gap:platform name="ios"/>
-        <gap:plugin name="org.apache.cordova.inappbrowser" source="npm" />
+        <gap:plugin name="org.apache.cordova.inappbrowser" version="0.5.2" />
     </widget>
-
    
